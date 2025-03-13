@@ -53,6 +53,8 @@ h2 {
     border-radius: 12px;
     transition: all 0.3s ease;
     margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
 }
 
 .chat-box::-webkit-scrollbar {
@@ -74,9 +76,11 @@ h2 {
     border-radius: 12px;
     font-size: 0.95rem;
     word-wrap: break-word;
+    word-break: keep-all;
     line-height: 1.4;
     box-shadow: 0 2px 8px rgba(0, 255, 0, 0.3);
     transition: transform 0.2s ease-in-out;
+    white-space: pre-wrap;
 }
 
 .Müşteri {
@@ -104,7 +108,9 @@ form {
     border-top: 1px solid #0f0;
     padding-top: 10px;
     padding-bottom: 10px;
-    z-index: 100;
+    z-index: 2;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 input[type="text"] {
@@ -174,54 +180,53 @@ input[type="submit"]:hover {
         max-width: none;
         display: flex;
         flex-direction: column;
+        position: relative;
     }
 
     .chat-box {
         flex: 1;
         padding: 5px;
         margin-top: 3px;
-        margin-bottom: 5px;
+        margin-bottom: 60px;
         border-radius: 8px;
         gap: 5px;
         border: 1px solid #0f0;
-        max-height: calc(100vh - 120px);
+        height: calc(100vh - 130px);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
     }
 
     form {
-        gap: 4px;
-        margin-top: 0;
-        padding: 8px 5px;
-        position: sticky;
+        position: fixed;
         bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 8px;
         background: #111;
         border-top: 1px solid #0f0;
-        width: 100%;
-        box-sizing: border-box;
+        margin: 0;
+        z-index: 1000;
     }
 
-    input[type="text"] {
+    .message {
+        max-width: 80%;
+        font-size: 0.85rem;
         padding: 8px;
-        font-size: 0.9rem;
-        border-width: 1px;
-        min-height: 40px;
-    }
-
-    input[type="submit"] {
-        padding: 8px 12px;
-        font-size: 0.9rem;
-        min-width: 60px;
-        min-height: 40px;
+        margin: 2px 0;
+        word-break: keep-all;
+        white-space: pre-wrap;
     }
 
     #spinner {
-        position: absolute;
-        bottom: 70px;
+        position: fixed;
+        bottom: 80px;
         left: 50%;
         transform: translateX(-50%);
         background: rgba(0, 0, 0, 0.8);
         padding: 10px;
         border-radius: 8px;
         border: 1px solid #0f0;
+        z-index: 1001;
     }
 
     h2 {
@@ -229,13 +234,6 @@ input[type="submit"]:hover {
         margin: 3px 0;
         padding: 5px;
         border-bottom: 1px solid #0f0;
-    }
-
-    .message {
-        max-width: 80%;
-        font-size: 0.85rem;
-        padding: 6px;
-        margin: 2px 0;
     }
 
     .message .sender {
