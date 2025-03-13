@@ -52,6 +52,7 @@ h2 {
     color: #0f0;
     border-radius: 12px;
     transition: all 0.3s ease;
+    margin-bottom: 10px;
 }
 
 .chat-box::-webkit-scrollbar {
@@ -95,8 +96,15 @@ h2 {
 form {
     display: flex;
     gap: 8px;
-    margin-top: 15px;
+    margin-top: 5px;
     padding: 0 5px;
+    position: sticky;
+    bottom: 0;
+    background: #111;
+    border-top: 1px solid #0f0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    z-index: 100;
 }
 
 input[type="text"] {
@@ -156,16 +164,6 @@ input[type="submit"]:hover {
 
 /* Mobil cihazlar için medya sorguları */
 @media screen and (max-width: 480px) {
-    body {
-        padding: 0;
-        margin: 0;
-        height: 100vh;
-        position: fixed;
-        width: 100%;
-        top: 0;
-        left: 0;
-    }
-
     .chat-container {
         width: 100%;
         height: 100vh;
@@ -174,6 +172,56 @@ input[type="submit"]:hover {
         margin: 0;
         border: 2px solid #0f0;
         max-width: none;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .chat-box {
+        flex: 1;
+        padding: 5px;
+        margin-top: 3px;
+        margin-bottom: 5px;
+        border-radius: 8px;
+        gap: 5px;
+        border: 1px solid #0f0;
+        max-height: calc(100vh - 120px);
+    }
+
+    form {
+        gap: 4px;
+        margin-top: 0;
+        padding: 8px 5px;
+        position: sticky;
+        bottom: 0;
+        background: #111;
+        border-top: 1px solid #0f0;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    input[type="text"] {
+        padding: 8px;
+        font-size: 0.9rem;
+        border-width: 1px;
+        min-height: 40px;
+    }
+
+    input[type="submit"] {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+        min-width: 60px;
+        min-height: 40px;
+    }
+
+    #spinner {
+        position: absolute;
+        bottom: 70px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.8);
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #0f0;
     }
 
     h2 {
@@ -181,14 +229,6 @@ input[type="submit"]:hover {
         margin: 3px 0;
         padding: 5px;
         border-bottom: 1px solid #0f0;
-    }
-
-    .chat-box {
-        padding: 5px;
-        margin-top: 3px;
-        border-radius: 8px;
-        gap: 5px;
-        border: 1px solid #0f0;
     }
 
     .message {
@@ -202,34 +242,6 @@ input[type="submit"]:hover {
         font-size: 0.75rem;
         margin-bottom: 2px;
         opacity: 0.8;
-    }
-
-    form {
-        gap: 4px;
-        margin-top: 5px;
-        padding: 0 2px;
-    }
-
-    input[type="text"] {
-        padding: 6px;
-        font-size: 0.85rem;
-        border-width: 1px;
-    }
-
-    input[type="submit"] {
-        padding: 6px 10px;
-        font-size: 0.85rem;
-        min-width: 55px;
-    }
-
-    #spinner {
-        margin-top: 4px;
-    }
-
-    .loader {
-        width: 18px;
-        height: 18px;
-        border-width: 2px;
     }
 
     #spinner span {
