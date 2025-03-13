@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Berkant Coroz Chat Bot</title>
+    <style>
+       body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #0f0;
+}
+
+.chat-container {
+    width: 90%;
+    max-width: 600px;
+    background: #111;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 255, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #0f0;
+    height: 80vh;
+}
+
+h2 {
+    text-align: center;
+    color: #0f0;
+}
+
+.chat-box {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+    flex-grow: 1;
+    padding: 20px;
+    border-bottom: 2px solid #0f0;
+    background-color: #222;
+    color: #0f0;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.chat-box::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-box::-webkit-scrollbar-thumb {
+    background-color: #00ff00;
+    border-radius: 10px;
+}
+
+.chat-box::-webkit-scrollbar-track {
+    background-color: #111;
+}
+
+.message {
+    max-width: 80%;
+    padding: 12px;
+    border-radius: 16px;
+    font-size: 16px;
+    word-wrap: break-word;
+    line-height: 1.5;
+    box-shadow: 0 4px 10px rgba(0, 255, 0, 0.3);
+    transition: transform 0.2s ease-in-out;
+}
+
+.Müşteri {
+    background-color: #004d00;
+    color: #fff;
+    align-self: flex-end;
+    border: 2px solid #00ff00;
+}
+
+.BerkantCoroz {
+    background-color: #003300;
+    color: #fff;
+    align-self: flex-start;
+    border: 2px solid #00ff00;
+}
+
+form {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+input[type="text"] {
+    flex-grow: 1;
+    padding: 12px;
+    border-radius: 8px;
+    border: 2px solid #0f0;
+    background: #222;
+    color: #0f0;
+    font-size: 16px;
+    outline: none;
+    transition: 0.3s;
+}
+
+input[type="text"]:focus {
+    border-color: #00ff00;
+    background: #333;
+}
+
+input[type="submit"] {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: #0f0;
+    color: black;
+    cursor: pointer;
+    transition: 0.3s;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+input[type="submit"]:hover {
+    background-color: #00ff00;
+}
+
+#spinner {
+    display: none;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.loader {
+    border: 6px solid #111;
+    border-top: 6px solid #0f0;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <h2>Berkant Coroz Chat Bot</h2>
+        <div id="chat-box" class="chat-box"></div>
+        <form id="chat-form">
+            <input type="text" name="user_input" placeholder="Sorunuzu buraya yazın" autofocus autocomplete="off" required>
+            <input type="submit" value="Gönder">
+        </form>
+        <div id="spinner" style="display: none; text-align: center; margin-top: 10px;">
+            <div class="loader" style="border: 6px solid #111; border-top: 6px solid #0f0; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+            <span>Lütfen bekleyiniz...</span>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const chatBox = document.getElementById("chat-box");
+            const form = document.getElementById("chat-form");
+            const inputField = document.querySelector("input[name='user_input']");
+            const spinner = document.getElementById("spinner");
+
+            // Proxy sunucu URL'si
+            const proxyUrl = "https://chatbotbrknt.beroo7isback.workers.dev";
+
+            const personalInfo = `Aşağıda \"Berkant Coroz\" hakkında bilgiler yer almaktadır.\n\n1. Kişisel Bilgiler\n- İsim: Berkant Coroz\n- Meslek: Back-end Developer\n- Lokasyon: Zonguldak, Türkiye\n\n2. Eğitim\n- Acunmedya Akademi: Python Programlamaya Giriş | 2025 - Halen\n- Düzce Üniversitesi: Radyo Televizyon ve Sinema | 2024 - Halen\n- Zonguldak Mesleki Teknik Anadolu Lisesi: Elektrik ve Elektronik Bölümü | 2020 - 2024\n\n3. Tecrübe\n- Acunmedya Akademi - Stajyer\n- Acunmedya Akademi Akademiq staj programına katıldım.\n\n4. Yetenekler\n- Python\n- Web Otomasyon\n\n5. Portfolyo\n- Amazon İndirimli Ürün Takip Botu\n- Twitter Otomatik İçerik Paylaşım Botu\n\n6. İletişim\n- E-posta: berkantcoroz@icloud.com\n- Adres: Zonguldak, Türkiye\n\n\"Sorulara bir ziyaretçiye yanıt verir gibi, samimi bir şekilde cevap ver. Direkt sorulan soruya tam ve net cevap ver ya da metinde benzer bir bilgi varsa onu aktar. Cevaplarını emoji kullanarak daha sıcak hale getir. Ayrıca, bir backend developer bakış açısıyla teknik ve detaylı açıklamalar yap.\"`;
+
+            async function getAIResponse(userInput) {
+                spinner.style.display = "block";
+                try {
+                    console.log('İstek gönderiliyor...');
+                    const response = await fetch(proxyUrl, {
+                        method: "POST",
+                        headers: { 
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            contents: [{ 
+                                parts: [{ 
+                                    text: personalInfo + "\n\nSoru: " + userInput 
+                                }] 
+                            }]
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP hata kodu: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    console.log('API yanıtı:', data);
+
+                    if (data.error) {
+                        throw new Error(data.error);
+                    }
+
+                    return data.candidates?.[0]?.content?.parts?.[0]?.text || "Üzgünüm, yanıt oluşturulamadı.";
+                } catch (error) {
+                    console.error('Hata:', error);
+                    return `Bir hata oluştu: ${error.message}. Lütfen tekrar deneyin.`;
+                } finally {
+                    spinner.style.display = "none";
+                }
+            }
+
+            form.addEventListener("submit", async function (event) {
+                event.preventDefault();
+                const userInput = inputField.value.trim();
+                if (!userInput) return;
+
+                const userMessage = `<div class='message Müşteri'><div class='sender'>Ziyaretçi:</div><div class='text'>${userInput}</div></div>`;
+                chatBox.innerHTML += userMessage;
+                inputField.value = "";
+                chatBox.scrollTop = chatBox.scrollHeight;
+
+                const aiResponse = await getAIResponse(userInput);
+                const botMessage = `<div class='message BerkantCoroz'><div class='sender'>Berkant Coroz:</div><div class='text'>${aiResponse}</div></div>`;
+                chatBox.innerHTML += botMessage;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            });
+        });
+    </script>
+</body>
+</html> 
